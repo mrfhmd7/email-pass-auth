@@ -10,10 +10,13 @@ const Register = () => {
 
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
+     const [err, setErr] = useState('');
+     const [success, setSuccess] = useState('');
 
      const handleSubmit = (event) => {
           //1. prevent page refresh
           event.preventDefault();
+          setSuccess('');
 
           //2. collect form data
           const email = event.target.email.value;
@@ -26,9 +29,13 @@ const Register = () => {
                .then(result => {
                     const user = result.user;
                     console.log(user);
+                    setErr('');
+                    event.target.reset();
+                    setSuccess('You have successfully registered')
                })
                .catch(error => {
                     console.error(error);
+                    setErr(error.message);
                });
      };
 
@@ -45,10 +52,12 @@ const Register = () => {
           <div>
                <h2>Register here</h2>
                <form onSubmit={handleSubmit}>
-                    <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder='Your email' />
+                    <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder='Your email' required />
                     <br />
-                    <input onBlur={handlePasswordBlur} type="password" name="password" id="password" placeholder='Your password' />
+                    <input onBlur={handlePasswordBlur} type="password" name="password" id="password" placeholder='Your password' required />
                     <br />
+                    <p className='text-danger'>{err}</p>
+                    <p className='text-success'>{success}</p>
                     <input type="submit" value="Register" />
                </form>
           </div>
