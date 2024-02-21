@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import './Register.css';
+import {getAuth} from 'firebase/auth';
+import app from '../../firebase/firebase.config';
+
 
 const Register = () => {
+
+     const auth = getAuth(app);
 
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
@@ -36,4 +41,4 @@ const Register = () => {
      );
 };
 
-export default Register; 
+export default Register;
