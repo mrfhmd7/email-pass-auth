@@ -17,14 +17,20 @@ const Register = () => {
           //1. prevent page refresh
           event.preventDefault();
           setSuccess('');
+          setErr('');
 
           //2. collect form data
           const email = event.target.email.value;
           const password = event.target.password.value;
           console.log(email, password);
 
-          //3. create user in firebase
+          //pass validation
+          if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(password)) {
+               setErr('Please enter a valid password with at least 6 characters');
+               return;
+          };
 
+          //3. create user in firebase
           createUserWithEmailAndPassword(auth, email, password)
                .then(result => {
                     const user = result.user;
