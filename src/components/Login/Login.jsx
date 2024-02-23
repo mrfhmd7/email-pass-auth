@@ -23,7 +23,7 @@ const Login = () => {
                setError('Please add at least two uppercase letters');
                return;
           }
-          else if (/(?=.*[!@#$%^&*])/.test(password)) {
+          else if (!/(?=.*[!@#$%^&*])/.test(password)) {
                setError('Please add at least one special characters');
                return;
           }
