@@ -4,6 +4,8 @@ import { Form, Button } from 'react-bootstrap';
 
 const Login = () => {
 
+     const [error, setError] = useState('');
+     const [success, setSuccess] = useState('');
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
 
@@ -13,6 +15,22 @@ const Login = () => {
           const email = form.email.value;
           const password = form.password.value;
           console.log(email, password);
+
+          //password validation
+          setError('');
+          setSuccess('');
+          if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
+               setError('Please add at least two uppercase letters');
+               return;
+          }
+          else if (/(?=.*[!@#$%^&*])/.test(password)) {
+               setError('Please add at least one special characters');
+               return;
+          }
+          else if (password.length < 6) {
+               setError('Password must be at least 6 characters');
+               return;
+          }
      };
 
      return (
@@ -47,6 +65,8 @@ const Login = () => {
                          Submit
                     </Button>
                </Form>
+               <p className='text-danger'>{error}</p>
+               <p className='text-success'>{success}</p>
           </div>
      );
 };
