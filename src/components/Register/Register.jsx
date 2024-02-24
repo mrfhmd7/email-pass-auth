@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Register.css';
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, updateProfile } from 'firebase/auth';
 import app from '../../firebase/firebase.config';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +23,8 @@ const Register = () => {
           //2. collect form data
           const email = event.target.email.value;
           const password = event.target.password.value;
-          console.log(email, password);
+          const name = event.target.name.value;
+          console.log(name, email, password);
 
           //pass validation
           if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(password)) {
@@ -40,6 +41,7 @@ const Register = () => {
                     event.target.reset();
                     setSuccess('You have successfully registered')
                     verifyEmail(user);
+                    updateUserData(user,name);
                })
                .catch(error => {
                     console.error(error);
@@ -52,6 +54,18 @@ const Register = () => {
                .then(result => {
                     console.log(result);
                     alert('Please verify your email')
+               })
+     };
+
+     const updateUserData = (user, name) => {
+          updateProfile(user, {
+               displayName: name
+          })
+               .then(() => {
+                    console.log('user name update');
+               })
+               .catch(error => {
+                    setErr(error.message);
                })
      };
 
@@ -68,6 +82,8 @@ const Register = () => {
           <div>
                <h2>Register here</h2>
                <form onSubmit={handleSubmit}>
+                    <input type="text" name="name" id="name" placeholder='Your name' required />
+                    <br />
                     <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder='Your email' required />
                     <br />
                     <input onBlur={handlePasswordBlur} type="password" name="password" id="password" placeholder='Your password' required />
