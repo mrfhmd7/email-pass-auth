@@ -16,6 +16,7 @@ const Login = () => {
 
      const handleSubmit = (event) => {
           event.preventDefault();
+
           const form = event.target;
           const email = form.email.value;
           const password = form.password.value;
@@ -41,9 +42,11 @@ const Login = () => {
                .then(result => {
                     const loggedUser = result.user;
                     console.log(loggedUser);
+
                     if (!loggedUser.emailVerified) {
                          alert('Please verify your email');
                     };
+
                     setEmail('');
                     setPassword('');
                     setSuccess('User login successfully');
@@ -60,6 +63,7 @@ const Login = () => {
                alert('Please provide your email to reset password');
                return;
           }
+          
           sendPasswordResetEmail(auth, email)
                .then(() => {
                     alert('Please check your email');

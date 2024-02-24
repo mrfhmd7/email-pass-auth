@@ -37,11 +37,13 @@ const Register = () => {
                .then(result => {
                     const user = result.user;
                     console.log(user);
+
                     setErr('');
                     event.target.reset();
                     setSuccess('You have successfully registered')
+
                     verifyEmail(user);
-                    updateUserData(user,name);
+                    updateUserData(user, name);
                })
                .catch(error => {
                     console.error(error);
