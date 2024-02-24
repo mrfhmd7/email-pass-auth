@@ -13,6 +13,7 @@ const Register = () => {
      const [password, setPassword] = useState('');
      const [err, setErr] = useState('');
      const [success, setSuccess] = useState('');
+     const [showPassword, setShowPassword] = useState(false);
 
      const handleSubmit = (event) => {
           //1. prevent page refresh
@@ -80,6 +81,11 @@ const Register = () => {
           // console.log(event.target.value);
           setPassword(event.target.value);
      };
+
+     const togglePasswordVisibility = () => {
+          setShowPassword(!showPassword);
+     };
+
      return (
           <div>
                <h2>Register here</h2>
@@ -88,7 +94,12 @@ const Register = () => {
                     <br />
                     <input onChange={handleEmailChange} type="email" name="email" id="email" placeholder='Your email' required />
                     <br />
-                    <input onBlur={handlePasswordBlur} type="password" name="password" id="password" placeholder='Your password' required />
+
+                    {/* <input onBlur={handlePasswordBlur} type="password" name="password" id="password" placeholder='Your password' required />
+                    <br /> */}
+
+                    <input onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} name="password" id="password" placeholder='Your password' required />
+                    <span role='button' onClick={togglePasswordVisibility}>{showPassword ? 'Hide' : 'Show'}</span> 
                     <br />
                     <p className='text-danger'>{err}</p>
                     <p className='text-success'>{success}</p>
