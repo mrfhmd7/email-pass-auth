@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Register.css';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
 import app from '../../firebase/firebase.config';
 import { Link } from 'react-router-dom';
 
@@ -39,11 +39,20 @@ const Register = () => {
                     setErr('');
                     event.target.reset();
                     setSuccess('You have successfully registered')
+                    verifyEmail(user);
                })
                .catch(error => {
                     console.error(error);
                     setErr(error.message);
                });
+     };
+
+     const verifyEmail = (user) => {
+          sendEmailVerification(user)
+               .then(result => {
+                    console.log(result);
+                    alert('Please verify your email')
+               })
      };
 
      const handlePasswordBlur = (event) => {
