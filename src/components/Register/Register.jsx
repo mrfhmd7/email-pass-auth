@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Register.css';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import app from '../../firebase/firebase.config';
+import { Link } from 'react-router-dom';
 
 
 const Register = () => {
@@ -64,6 +65,7 @@ const Register = () => {
                     <br />
                     <p className='text-danger'>{err}</p>
                     <p className='text-success'>{success}</p>
+                    <h5>Already have an account? Please <Link to='/login'>Login</Link></h5>
                     <input type="submit" value="Register" />
                </form>
           </div>
