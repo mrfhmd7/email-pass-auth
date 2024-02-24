@@ -1,6 +1,5 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import React from 'react';
-import { useState } from 'react';
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useRef, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import app from '../../firebase/firebase.config';
 import { Link } from 'react-router-dom';
@@ -13,6 +12,7 @@ const Login = () => {
      const [success, setSuccess] = useState('');
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
+     const emailRef = useRef();
 
      const handleSubmit = (event) => {
           event.preventDefault();
@@ -44,12 +44,30 @@ const Login = () => {
                     if (!loggedUser.emailVerified) {
                          alert('Please verify your email');
                     };
+                    setEmail('');
+                    setPassword('');
                     setSuccess('User login successfully');
                     setError('');
                })
                .catch(error => {
                     setError(error.message);
                })
+     };
+
+     const handleResetPassword = event => {
+          const email = emailRef.current.value;
+          if (!email) {
+               alert('Please provide your email to reset password');
+               return;
+          }
+          sendPasswordResetEmail(auth, email)
+               .then(() => {
+                    alert('Please check your email');
+               })
+               .catch(error => {
+                    console.log(error);
+                    setError(error.message);
+               });
      };
 
      return (
@@ -62,6 +80,7 @@ const Login = () => {
                               type="email"
                               placeholder="Enter email"
                               name="email"
+                              ref={emailRef}
                               value={email}
                               required
                               onChange={(event) => setEmail(event.target.value)}
@@ -84,6 +103,7 @@ const Login = () => {
                          Submit
                     </Button>
                </Form>
+               <p className='pt-3'>Forget Password? please <button onClick={handleResetPassword} className='btn btn-link'>Reset Password</button></p>
                <h5>New to this website? <Link to='/register'>Register</Link> here</h5>
                <p className='text-danger'>{error}</p>
                <p className='text-success'>{success}</p>
